@@ -3,8 +3,10 @@ import requests,numpy as np
 from transformers import pipeline
 import torch
 from models import pipeline as sentiment_pipeline 
-
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
+key=os.environ.get("TMDB_API_KEY")
 app=Flask(__name__)
 @app.route("/",methods=["GET"])
 def main():
@@ -15,7 +17,7 @@ def movie_detail():
     if request.method =="POST":
         data=request.get_json()
         movieid=data["id"]
-        key="api-key from tmdb"
+        key=key
         url=f"https://api.themoviedb.org/3/movie/{movieid}?api_key={key}"
         response=requests.get(url)
         data=response.json()
