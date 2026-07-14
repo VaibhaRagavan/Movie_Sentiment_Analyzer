@@ -16,36 +16,28 @@
     <script>
         const input = document.getElementById("name");
         const suggestions = document.getElementById("suggestions");
-
-        const API_KEY = os.environ.get("TMDB_API_KEY"); // keep your key here
-
-        input.addEventListener("input", () => {
-            const query = input.value.trim();
-
-            suggestions.innerHTML = "";
-
-            if (!query) return;
-
-            // Fetch movies dynamically based on input
-            fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`)
-                .then(res => res.json())
-                .then(data => {
-                    const movies = data.results;
-                    movies.forEach(movie => {
-                        const li = document.createElement("li");
-                        li.textContent = movie.title;
-
-                        li.addEventListener("click", () => {
-                            input.value = movie.title;
-                            input.dataset.movieId = movie.id; // store ID
-                            suggestions.innerHTML = "";
-                        });
-
-                        suggestions.appendChild(li);
-                    });
-                })
-                .catch(err => console.error(err));
-        });
+            input.addEventListener("input", () => {
+    const query = input.value.trim();
+    suggestions.innerHTML = "";
+    if (!query) return;
+    fetch(`/search_movies?q=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+            const movies = data.results;
+            movies.forEach(movie => {
+                const li = document.createElement("li");
+                li.textContent = movie.title;
+                li.addEventListener("click", () => {
+                    input.value = movie.title;
+                    input.dataset.movieId = movie.id;
+                    suggestions.innerHTML = "";
+                });
+                suggestions.appendChild(li);
+            });
+        })
+        .catch(err => console.error(err));
+});
+                        
 
         // Submit to backend
         document.getElementById("movie_form").addEventListener("submit", e => {
