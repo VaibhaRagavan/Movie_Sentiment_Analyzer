@@ -17,7 +17,7 @@
         const input = document.getElementById("name");
         const suggestions = document.getElementById("suggestions");
 
-        const API_KEY = "api-key"; // keep your key here
+        const API_KEY = os.environ.get("TMDB_API_KEY"); // keep your key here
 
         input.addEventListener("input", () => {
             const query = input.value.trim();
